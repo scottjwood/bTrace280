@@ -842,7 +842,7 @@ def addtracemat(matobj):
         matslots = bpy.context.object.data.materials.items()
 
         if len(matslots) < 1:  # Make sure there is only one material slot
-            engine = bpy.context.scene.render.engine
+            
             Btrace = bpy.context.window_manager.curve_tracer
 
             # Check if color blender is to be run
@@ -899,16 +899,14 @@ def addtracemat(matobj):
                     mat_color = Btrace.trace_mat_color
 
                 TraceMat = bpy.data.materials.new('TraceMat')
-                # add cycles or BI render material options
-                if engine == 'CYCLES':
-                    TraceMat.use_nodes = True
-                    Diffuse_BSDF = TraceMat.node_tree.nodes['Diffuse BSDF']
-                    r, g, b = mat_color[0], mat_color[1], mat_color[2]
-                    Diffuse_BSDF.inputs[0].default_value = [r, g, b, 1]
-                    TraceMat.diffuse_color = mat_color
-                else:
-                    TraceMat.diffuse_color = mat_color
-                    TraceMat.specular_intensity = 0.5
+                
+                TraceMat.use_nodes = True 
+                BSDF = TraceMat.node_tree.nodes['Principled BSDF']
+                r, g, b = mat_color[0], mat_color[1], mat_color[2]
+                BSDF.inputs[0].default_value = [r, g, b, 1] # change node color
+                TraceMat.diffuse_color = [r, g, b, 1] # change viewport color
+                
+               
                 # Add material to object
                 matobj.materials.append(bpy.data.materials.get(TraceMat.name))
 
