@@ -240,6 +240,7 @@ class OBJECT_OT_objectconnect(Operator):
                 bpy.ops.curve.btgrow()
 
             bpy.data.collections["Btrace"].objects.link(curve) # add to Btrace collection
+            
             # Check if we add grow curve
             if Btrace.animate:
                 bpy.ops.curve.btgrow()  # Add grow curve
@@ -264,7 +265,7 @@ def curvetracer(curvename, splinename):
     tracer = bpy.data.curves.new(splinename, 'CURVE')
     tracer.dimensions = '3D'
     curve = bpy.data.objects.new(curvename, tracer)
-    bpy.context.view_layer.objects.link(curve)
+    bpy.context.collection.objects.link(curve)
     try:
         tracer.fill_mode = 'FULL'
     except:
@@ -272,10 +273,9 @@ def curvetracer(curvename, splinename):
     tracer.bevel_resolution = Btrace.curve_resolution
     tracer.bevel_depth = Btrace.curve_depth
     tracer.resolution_u = Btrace.curve_u
-
     return tracer, curve
 
-
+# Particle Trace
 class OBJECT_OT_particletrace(Operator):
     bl_idname = "particles.particletrace"
     bl_label = "Btrace: Particle Trace"
@@ -290,9 +290,10 @@ class OBJECT_OT_particletrace(Operator):
 
     def execute(self, context):
         try:
-            Btrace = context.window_manager.curve_tracer
+            Btrace = bpy.context.window_manager.curve_tracer
             particle_step = Btrace.particle_step    # step size in frames
-            obj = bpy.context.object
+            ob = bpy.context.object
+            obj = bpy.context.depsgraph.objects.get(ob.name, None)
             ps = obj.particle_systems.active
             curvelist = []
             curve_handle = Btrace.curve_handle
@@ -311,14 +312,17 @@ class OBJECT_OT_particletrace(Operator):
 
             if Btrace.curve_join:
                 tracer = curvetracer('Tracer', 'Splines')
+            
             for x in ps.particles:
                 if not Btrace.curve_join:
                     tracer = curvetracer('Tracer.000', 'Spline.000')
                 spline = tracer[0].splines.new('BEZIER')
+
                 # add point to spline based on step size
                 spline.bezier_points.add((x.lifetime - 1) // particle_step)
                 for t in list(range(int(x.lifetime))):
                     bpy.context.scene.frame_set(t + x.birth_time)
+                    
                     if not t % particle_step:
                         p = spline.bezier_points[t // particle_step]
                         p.co = x.location
@@ -326,13 +330,13 @@ class OBJECT_OT_particletrace(Operator):
                         p.handle_left_type = curve_handle
                 particlecurve = tracer[1]
                 curvelist.append(particlecurve)
+
             # add to group
             bpy.ops.object.select_all(action='DESELECT')
             for curveobject in curvelist:
                 curveobject.select_set(True)
                 bpy.context.view_layer.objects.active = curveobject
                 bpy.data.collections["Btrace"].objects.link(curveobject)
-                # bpy.ops.object.group_link(group="Btrace")
                 # Materials
                 trace_mats = addtracemat(curveobject.data)
                 if not trace_mats and check_materials is True:
