@@ -537,16 +537,16 @@ class TracerProperties(PropertyGroup):
 
     # Toolbar show/hide booleans for tool options
     btrace_menu_items = [
-            ('tool_help', "Help",
-             "Pick one of the options below", "INFO", 0),
+        #     ('tool_help', "Help",
+        #      "Pick one of the options below", "INFO", 0),
             ('tool_objectTrace', "Object Trace",
              "Trace selected mesh object with a curve", "FORCE_MAGNETIC", 1),
             ('tool_objectsConnect', "Objects Connect",
              "Connect objects with a curve controlled by hooks", "OUTLINER_OB_EMPTY", 2),
             ('tool_meshFollow', "Mesh Follow",
              "Follow selection items on animated mesh object", "DRIVER", 3),
-            ('tool_handwrite', "Handwriting",
-             "Create and Animate curve using the grease pencil", "BRUSH_DATA", 4),
+        #     ('tool_handwrite', "Handwriting",
+        #      "Create and Animate curve using the grease pencil", "BRUSH_DATA", 4),
             ('tool_particleTrace', "Particle Trace",
              "Trace particle path with a  curve", "PARTICLES", 5),
             ('tool_particleConnect', "Particle Connect",
@@ -558,6 +558,7 @@ class TracerProperties(PropertyGroup):
             ('tool_colorblender', "Color Blender",
              "Pick the color of the created curves", "COLOR", 9),
             ]
+
     btrace_toolmenu: EnumProperty(
             name="Tools",
             items=btrace_menu_items,
