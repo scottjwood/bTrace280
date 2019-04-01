@@ -537,8 +537,8 @@ class TracerProperties(PropertyGroup):
 
     # Toolbar show/hide booleans for tool options
     btrace_menu_items = [
-        #     ('tool_help', "Help",
-        #      "Pick one of the options below", "INFO", 0),
+            ('tool_help', "Choose Tool",
+             "Pick one of the options below", "INFO", 0),
             ('tool_objectTrace', "Object Trace",
              "Trace selected mesh object with a curve", "FORCE_MAGNETIC", 1),
             ('tool_objectsConnect', "Objects Connect",
