@@ -374,8 +374,9 @@ class OBJECT_OT_traceallparticles(Operator):
 
     def execute(self, context):
         try:
-            obj = context.object
-            ps = obj.particle_systems.active
+            obj = bpy.context.active_object
+            eval_ob = bpy.context.depsgraph.objects.get(obj.name, None)
+            ps = eval_ob.particle_systems.active
             setting = ps.settings
 
             # Grids distribution not supported
@@ -401,7 +402,8 @@ class OBJECT_OT_traceallparticles(Operator):
             # Create new object with settings listed above
             curve = bpy.data.objects.new('Tracer', tracer)
             # Link newly created object to the scene
-            bpy.context.view_layer.objects.link(curve)
+            # bpy.context.view_layer.objects.link(curve)
+            bpy.context.scene.collection.objects.link(curve)
             # add a new Bezier point in the new curve
             spline = tracer.splines.new('BEZIER')
             spline.bezier_points.add(setting.count - 1)
