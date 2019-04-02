@@ -911,7 +911,7 @@ def addtracemat(matobj):
                 TraceMat = bpy.data.materials.new('TraceMat')
                 
                 TraceMat.use_nodes = True 
-                BSDF = TraceMat.node_tree.nodes['Principled BSDF']
+                BSDF = TraceMat.node_tree.nodes[1]
                 r, g, b = mat_color[0], mat_color[1], mat_color[2]
                 BSDF.inputs[0].default_value = [r, g, b, 1] # change node color
                 TraceMat.diffuse_color = [r, g, b, 1] # change viewport color
@@ -997,7 +997,7 @@ class OBJECT_OT_materialChango(Operator):
                 def colorblenderRandom():
                     randomRGB = (rand_random(), rand_random(), rand_random(), 1)
                     if engine == 'CYCLES' or engine == 'BLENDER_EEVEE':
-                        Principled_BSDF = madMat.node_tree.nodes['Principled BSDF']
+                        Principled_BSDF = madMat.node_tree.nodes[1]
                         mat_color = randomRGB
                         r, g, b = mat_color[0], mat_color[1], mat_color[2]
                         Principled_BSDF.inputs[0].default_value = [r, g, b, 1]
@@ -1007,7 +1007,7 @@ class OBJECT_OT_materialChango(Operator):
 
                 def colorblenderCustom():
                     if engine == 'CYCLES' or engine == 'BLENDER_EEVEE':
-                        Principled_BSDF = madMat.node_tree.nodes['Principled BSDF']
+                        Principled_BSDF = madMat.node_tree.nodes[1]
                         mat_color = rand_choice(customColors)
                         r, g, b = mat_color[0], mat_color[1], mat_color[2]
                         Principled_BSDF.inputs[0].default_value = [r, g, b, 1]
@@ -1018,7 +1018,7 @@ class OBJECT_OT_materialChango(Operator):
                 # Black and white color
                 def colorblenderBW():
                     if engine == 'CYCLES' or engine == 'BLENDER_EEVEE':
-                        Principled_BSDF = madMat.node_tree.nodes['Principled BSDF']
+                        Principled_BSDF = madMat.node_tree.nodes[1]
                         mat_color = rand_choice(bwColors)
                         r, g, b = mat_color[0], mat_color[1], mat_color[2]
                         Principled_BSDF.inputs[0].default_value = [r, g, b, 1]
@@ -1029,7 +1029,7 @@ class OBJECT_OT_materialChango(Operator):
                 # Bright colors
                 def colorblenderBright():
                     if engine == 'CYCLES' or engine == 'BLENDER_EEVEE':
-                        Principled_BSDF = madMat.node_tree.nodes['Principled BSDF']
+                        Principled_BSDF = madMat.node_tree.nodes[1]
                         mat_color = rand_choice(brightColors)
                         r, g, b = mat_color[0], mat_color[1], mat_color[2]
                         Principled_BSDF.inputs[0].default_value = [r, g, b, 1]
@@ -1040,7 +1040,7 @@ class OBJECT_OT_materialChango(Operator):
                 # Earth Tones
                 def colorblenderEarth():
                     if engine == 'CYCLES' or engine == 'BLENDER_EEVEE':
-                        Principled_BSDF = madMat.node_tree.nodes['Principled BSDF']
+                        Principled_BSDF = madMat.node_tree.nodes[1]
                         mat_color = rand_choice(earthColors)
                         r, g, b = mat_color[0], mat_color[1], mat_color[2]
                         Principled_BSDF.inputs[0].default_value = [r, g, b, 1]
@@ -1051,7 +1051,7 @@ class OBJECT_OT_materialChango(Operator):
                 # Green to Blue Tones
                 def colorblenderGreenBlue():
                     if engine == 'CYCLES' or engine == 'BLENDER_EEVEE':
-                        Principled_BSDF = madMat.node_tree.nodes['Principled BSDF']
+                        Principled_BSDF = madMat.node_tree.nodes[1]
                         mat_color = rand_choice(greenblueColors)
                         r, g, b = mat_color[0], mat_color[1], mat_color[2]
                         Principled_BSDF.inputs[0].default_value = [r, g, b, 1]
@@ -1087,7 +1087,7 @@ class OBJECT_OT_materialChango(Operator):
                     # Add keyframe to material
                     if engine == 'CYCLES' or engine == 'BLENDER_EEVEE':
                         madMat.node_tree.nodes[
-                                'Principled BSDF'].inputs[0].keyframe_insert('default_value')
+                                1].inputs[0].keyframe_insert('default_value')
                         # not sure if this is need, it's viewport color only
                         madMat.keyframe_insert('diffuse_color')
                     else:
@@ -1134,7 +1134,7 @@ class OBJECT_OT_clearColorblender(Operator):
                     try:
                         if engine == 'CYCLES' or engine == 'BLENDER_EEVEE':
                             matCl.node_tree.nodes[
-                                'Principled BSDF'].inputs[0].keyframe_delete('default_value')
+                                1].inputs[0].keyframe_delete('default_value')
                         elif engine == 'BLENDER_RENDER':
                             matCl.keyframe_delete('diffuse_color')
                     except:
